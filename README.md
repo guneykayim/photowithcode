@@ -24,11 +24,11 @@ pip install opencv-python-headless
 
 ## Usage
 ```
-python3 photowithcode.py -p photo.jpg -c code.png -d 1
+python3 photowithcode.py -p photo.jpg -c code.png -d 1 -m 1
 ```
 or
 ```
-python3 photowithcode.py --Photo photo.jpg --Code code.png --Dim 1
+python3 photowithcode.py --Photo photo.jpg --Code code.png --Dim 1 --Mirror 1
 ```
 
 ## Tips
