@@ -10,6 +10,10 @@ def dim_bg(im):
     im[..., 2] = im[..., 2] - im[..., 2].min()
     return im
 
+def mirror(im):
+    im = cv2.flip(im, 1)
+    return im
+
 def downscale_large_image(im1, im2):
     if im1.shape[0] > im2.shape[0]:
         return downscale_large_image(im2, im1)
@@ -17,7 +21,7 @@ def downscale_large_image(im1, im2):
     im2 = cv2.resize(im2, dim, interpolation = cv2.INTER_AREA)
     return (im1, im2)
 
-def photowithcode(photo_path, code_path, should_dim_bg):
+def photowithcode(photo_path, code_path, should_dim_bg, should_mirror):
     photo = cv2.imread(photo_path, cv2.IMREAD_COLOR)
     if photo is None:
         print(f'error: couldn\'t read {photo_path}')
@@ -31,6 +35,10 @@ def photowithcode(photo_path, code_path, should_dim_bg):
         if should_dim_bg:
             print('dimming the background...')
             code = dim_bg(code)
+        
+        if should_mirror:
+            print('mirroring code...')
+            code = mirror(code)
         print('downscaling the larger image...')
         im1, im2 = downscale_large_image(photo, code)
 
@@ -47,11 +55,12 @@ if __name__ == '__main__':
     photo_path = 'sample_photo.jpg'
     code_path = 'sample_code.png'
     should_dim_bg = False
+    should_mirror = False
 
     # read arguments to override
     argument_list = sys.argv[1:]
-    options = 'p:c:d:'
-    long_options = ['Photo=', 'Code=', 'Dim=']
+    options = 'p:c:d:m:'
+    long_options = ['Photo=', 'Code=', 'Dim=', 'Mirror=']
 
     try:
         arguments, values = getopt.getopt(argument_list, options, long_options)
@@ -62,6 +71,8 @@ if __name__ == '__main__':
                 code_path = val
             elif arg in ('-d', '--Dim'):
                 should_dim_bg = bool(int(val))
+            elif arg in ('-m', '--Mirror'):
+                should_mirror = bool(int(val))
                 
     except getopt.error as err:
         # output error, and return with an error code
@@ -71,5 +82,6 @@ if __name__ == '__main__':
     print(f'   photo_path={photo_path}')
     print(f'   code_path={code_path}')
     print(f'   should_dim_bg={should_dim_bg}')
+    print(f'   should_mirror={should_mirror}')
     print('starting processing...')
-    photowithcode(photo_path, code_path, should_dim_bg)
+    photowithcode(photo_path, code_path, should_dim_bg, should_mirror)
