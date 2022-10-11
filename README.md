@@ -1,7 +1,7 @@
 # Photo with code
 @aslanon tweeted this: https://twitter.com/aslanon/status/1579766404383141888
 
-So, I created this script for every to be able to call themselves 'Developer' :)
+So, I created this script for everyone to be able to call themselves 'Developer' :)
 
 ## Setup 
 ```
