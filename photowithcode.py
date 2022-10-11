@@ -44,14 +44,14 @@ def photowithcode(photo_path, code_path, should_dim_bg):
 
 if __name__ == '__main__':
     # set default values
-    photo_path = 'photo.jpg'
-    code_path = 'code.png'
-    should_dim_bg = True
+    photo_path = 'sample_photo.jpg'
+    code_path = 'sample_code.png'
+    should_dim_bg = False
 
     # read arguments to override
     argument_list = sys.argv[1:]
     options = 'p:c:d:'
-    long_options = ['Photo = ', 'Code = ', 'Dim = ']
+    long_options = ['Photo=', 'Code=', 'Dim=']
 
     try:
         arguments, values = getopt.getopt(argument_list, options, long_options)
