@@ -17,7 +17,7 @@ def mirror(im):
 def downscale_large_image(im1, im2):
     if im1.shape[0] > im2.shape[0]:
         return downscale_large_image(im2, im1)
-    dim = (im1.shape[0], im1.shape[1])
+    dim = (im1.shape[1], im1.shape[0])
     im2 = cv2.resize(im2, dim, interpolation = cv2.INTER_AREA)
     return (im1, im2)
 
