@@ -1,27 +1,28 @@
 import getopt, sys
+from typing import List, Tuple
 import cv2
 
-def is_rgb(im1, im2):
+def is_rgb(im1: cv2.Mat, im2: cv2.Mat) -> cv2.Mat:
     return im1.shape[2] == 3 and im2.shape[2] == 3
 
-def dim_bg(im):
+def dim_bg(im: cv2.Mat) -> cv2.Mat:
     im[..., 0] = im[..., 0] - im[..., 0].min()
     im[..., 1] = im[..., 1] - im[..., 1].min()
     im[..., 2] = im[..., 2] - im[..., 2].min()
     return im
 
-def mirror(im):
+def mirror(im: cv2.Mat) -> cv2.Mat:
     im = cv2.flip(im, 1)
     return im
 
-def downscale_large_image(im1, im2):
+def downscale_large_image(im1: cv2.Mat, im2: cv2.Mat) -> Tuple[cv2.Mat, cv2.Mat]:
     if im1.shape[0] > im2.shape[0]:
         return downscale_large_image(im2, im1)
     dim = (im1.shape[1], im1.shape[0])
     im2 = cv2.resize(im2, dim, interpolation = cv2.INTER_AREA)
     return (im1, im2)
 
-def photowithcode(photo_path, code_path, should_dim_bg, should_mirror):
+def photowithcode(photo_path: str, code_path: str, should_dim_bg: bool, should_mirror: bool) -> None:
     photo = cv2.imread(photo_path, cv2.IMREAD_COLOR)
     if photo is None:
         print(f'error: couldn\'t read {photo_path}')
@@ -58,11 +59,13 @@ if __name__ == '__main__':
     should_mirror = False
 
     # read arguments to override
-    argument_list = sys.argv[1:]
+    argument_list: List[str] = sys.argv[1:]
     options = 'p:c:d:m:'
     long_options = ['Photo=', 'Code=', 'Dim=', 'Mirror=']
 
     try:
+        arguments: List[Tuple[str, str]]
+        values: List[str]
         arguments, values = getopt.getopt(argument_list, options, long_options)
         for arg, val in arguments:
             if arg in ('-p', '--Photo'):
